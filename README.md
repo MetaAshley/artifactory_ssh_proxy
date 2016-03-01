@@ -3,12 +3,11 @@
 [![Build Status](https://travis-ci.org/yahoo/artifactory_ssh_proxy.svg)](https://travis-ci.org/yahoo/artifactory_ssh_proxy) [![Dependency Status](https://www.versioneye.com/user/projects/555b952c634daa30fb000308/badge.svg?style=flat)](https://www.versioneye.com/user/projects/555b952c634daa30fb000308) [![Coverage Status](https://coveralls.io/repos/yahoo/artifactory_ssh_proxy/badge.svg)](https://coveralls.io/r/yahoo/artifactory_ssh_proxy) [![Download](https://api.bintray.com/packages/yahoo/maven/artifactory_ssh_proxy/images/download.svg)](https://bintray.com/yahoo/maven/artifactory_ssh_proxy/_latestVersion)
 
 
-**artifactory_ssh_proxy** is an Artifactory SSH proxy that lets you `scp` files directly into your Artifactory server.  No need to use the REST API.
+**Artifactory SSH proxy** lets you `scp` files directly into your Artifactory server without the RESTful API.
 
 You will be able to push artifacts up as simply as:
 
 `$ scp artifact_file your-artifactory-host.org:/repository-name/directory-name/your_artifact`
-
 
 If you are using maven, you can one-line deploy artifacts with:
 
@@ -31,16 +30,16 @@ If you do this, be sure to include wagon-ssh-external artifact in your project's
 
 ## Requirements
 
-- Currently the proxy will only run on a linux machine.  Sorry windows.
+- Currently, the proxy will only run on a Linux machine.  Sorry Windows users.
 - Java 1.7 installed and configured.
    - JCE crypto from: `http://www.oracle.com/technetwork/java/embedded/embedded-se/downloads/jce-7-download-432124.html` or `http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html`
-- An artifactory server for which you have created an account (username & password) for the proxy to use.
+- An Artifactory server for which you have created an account (username & password) for the proxy to use.
 - Anyone who wants to use the proxy will need to be capable of ssh'ing into the proxy server.
    - FIXME: should be able to seperate this out.
 
-- It's highly advisable to look at apache commons daemon to run this while dropping privileges.
-- For unix operating systems, jsvc: http://commons.apache.org/proper/commons-daemon/jsvc.html
-- For windows, procrun: http://commons.apache.org/proper/commons-daemon/procrun.html
+- It's highly advisable to look at Apache Commons Daemon to run this while dropping privileges.
+- For UNIX operating systems, jsvc: http://commons.apache.org/proper/commons-daemon/jsvc.html
+- For Windows, procrun: http://commons.apache.org/proper/commons-daemon/procrun.html
 
 ## Build & Run
 
@@ -75,7 +74,7 @@ If you do this, be sure to include wagon-ssh-external artifact in your project's
     repo-open-to-all=WRITE:*,READ:*
     ```
 
-7. The proxy server is designed to be used in large scale deployments with many proxy servers under a load balancer.  In this production situation, the hostkey needs to match amongst all the individual proxy servers.  For now, lets assume a single machine instance and symlink the hostkey where `sshd_proxy` looks.  _Prior to doing this step_, you will want to create an ssh key (DSA) for the user account that runs the proxy jar.
+7. The proxy server is designed to be used in large scale deployments with many proxy servers under a load balancer.  In this production situation, the hostkey needs to match against all the individual proxy servers.  For now, let's assume a single machine instance and symlink the hostkey where `sshd_proxy` looks.  _Prior to doing this step_, you will want to create an ssh key (DSA) for the user account that runs the proxy jar.
     A host key can be created by running `ssh-keygen -t dsa -f $ROOT/conf/sshd_proxy/ssh_host_dsa_key -C '' -N ''`
 
     `$ sudo ln -s ~/.ssh/ssh_host_dsa_key /opt/sshd_proxy/conf/sshd_proxy/ssh_host_dsa_key`
@@ -130,12 +129,12 @@ With these instructions, you can copy the artifactory war to
     [areese@dinnercare]$
 
 
-## Misc notes.
+## Miscellaneous Notes
 
-The sshd proxy embeds jetty to allow custom functionality.
+The sshd proxy embeds Jetty to allow custom functionality.
 If you have a vip that performs status checks over http, you can use jetty to communicate back to the vip.
 
-To switch on the vip mode in jetty use the parameter '-s vip'. This will serve the resources in the configured webapp directory.
+To switch on the vip mode in Jetty use the parameter '-s vip'. This will serve the resources in the configured webapp directory.
 To deploy the artifactory.war, use '-s artifactory'. To do both, use '-s both'. If this flag is not supplied, it defaults to '-s artifactory'.
 
 If you are running multiple instances of the proxy behind a vip, you'll want to ensure that the host keys
@@ -155,7 +154,3 @@ The informational message allows you to do troubleshooting of keys by having a u
 and that will verify that the proxy is aware of and is accepting their keys.
 This also allows you to separate the people who can upload from the people who manage the actual machine.
 
-Download artifactory here:
-http://www.jfrog.com/open-source/
-
-then you can unzip the war and have the proxy load it.
